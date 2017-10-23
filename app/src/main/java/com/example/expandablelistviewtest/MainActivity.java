@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         final ExpandableListAdapter expandableListAdapter = new ExpandableListAdapter(BOOKS, FIGURES);
         expandableListView.setAdapter(expandableListAdapter);
 
-        //点击子项
+        //点击子项（展开的项）
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView expandableListView, View view, int groupPosition, int childPosition, long l) {
@@ -39,10 +39,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //点击组
+        //点击组项
         expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView expandableListView, View view, int groupPosition, long l) {
+                Toast.makeText(MainActivity.this, BOOKS[groupPosition]+"", Toast.LENGTH_SHORT).show();
                 boolean isExpand = expandableListView.isGroupExpanded(groupPosition);
                 expandableListAdapter.setIndicatorState(groupPosition,isExpand);
                 return false;//当返回true时，无法展开下一级列表
