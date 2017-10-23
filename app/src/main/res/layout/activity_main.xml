@@ -1,15 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.expandablelistviewtest.MainActivity">
+    tools:context="com.example.expandablelistviewtest.MainActivity"
+    android:orientation="vertical">
+
+    <Button
+        android:text="添加一组"
+        android:onClick="click"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:text="去掉第一组，第一项"
+        android:onClick="removeClick"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
     <ExpandableListView
         android:id="@+id/expandableListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

@@ -8,7 +8,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by HeTingwei on 2017/10/23.
@@ -16,11 +15,11 @@ import java.util.List;
 
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
-    String[] groupData;//组名
-    String[][] childData;//字列表的子项数据
-    List<ImageView> imgList;//暂存imageview对象，便于调整展开和收拢的样式
+    ArrayList<String> groupData;//组名
+    ArrayList<ArrayList<String>> childData;//字列表的子项数据
+    ArrayList<ImageView> imgList;//暂存imageview对象，便于调整展开和收拢的样式
 
-    public ExpandableListAdapter(String[] groupData, String[][] childData) {
+    public ExpandableListAdapter(ArrayList<String>groupData, ArrayList<ArrayList<String>> childData) {
         this.groupData = groupData;
         this.childData = childData;
         imgList = new ArrayList<>();
@@ -28,23 +27,23 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getGroupCount() {
-        return groupData.length;
+        return groupData.size();
     }
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return childData[groupPosition].length;
+        return childData.get(groupPosition).size();
     }
 
     @Override
     public Object getGroup(int groupPosition) {
 
-        return groupData[groupPosition];
+        return groupData.get(groupPosition);
     }
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return childData[groupPosition][childPosition];
+        return childData.get(groupPosition).get(childPosition);
     }
 
     @Override
@@ -75,7 +74,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         } else {
             groupViewHolder = (GroupViewHolder) convertView.getTag();
         }
-        groupViewHolder.groupTv.setText(groupData[groupPosition]);
+        groupViewHolder.groupTv.setText(groupData.get(groupPosition));
         return convertView;
     }
 
@@ -91,7 +90,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             childViewHolder = (ChildViewHolder) convertView.getTag();
         }
 
-        childViewHolder.childTv.setText(childData[groupPosition][childPosition]);
+        childViewHolder.childTv.setText(childData.get(groupPosition).get(childPosition));
         return convertView;
     }
 
@@ -116,14 +115,45 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         } else {
             imgList.get(groupPosition).setImageResource(R.drawable.ic_expand_more);
         }
-        //最后一项有问题，前面imglist最后两项：最后一个对，倒数第二个没用。imgList多出一项（倒数第二个）
-        if (groupPosition == groupData.length - 1) {
-            if (isExpanded) {
-                imgList.get(groupPosition+1).setImageResource(R.drawable.ic_expand_less);
-            } else {
-                imgList.get(groupPosition+1).setImageResource(R.drawable.ic_expand_more);
-            }
-        }
 
     }
+/*
+*
+* 不是必须的部分
+*
+*
+* */
+
+    //添加一组
+    public void addGroup(String group,ArrayList<String>child) {
+        groupData.add(group);
+        childData.add(child);
+        notifyDataSetChanged();
+    }
+
+    //去掉对应位置子项
+    public void removeChild(int groupPosition,int childPosition){
+        if (groupPosition >= groupData.size() || childData.get(groupPosition).size() <= childPosition||groupPosition<0||childPosition<0) {
+            return;
+        }
+
+        childData.get(groupPosition).remove(childPosition);
+        notifyDataSetChanged();
+    }
+
+    //获取对应位置组的内容字符串
+    public   String getGroupDataString(int groupPosition){
+        if (groupPosition >= groupData.size()||groupPosition<0) {
+            return null;
+        }
+        return  groupData.get(groupPosition);
+    }
+    //获取对应位置子项的内容字符串
+    public String getChildDataString(int groupPosition,int childPosition){
+        if (groupPosition >= groupData.size() || childData.get(groupPosition).size() <= childPosition||groupPosition<0||childPosition<0) {
+            return null;
+        }
+        return  childData.get(groupPosition).get(childPosition);
+    }
+
 }
